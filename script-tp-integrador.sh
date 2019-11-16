@@ -88,11 +88,15 @@ ordenar(){
 
 mostrar_contenido(){
 	dir=$1
-        if [ -d "$dir" ]; then
-		find $dir -type f | sed 's/.*\.//' | sort | uniq -c
-        else
-	        echo "ERROR: El directorio no existe"
-        fi
+	if [ -d "$dir" ]; then
+		find $dir -maxdepth 1 -type f -name "*.*" | sed 's/.*\.//' | sort | uniq -c
+		num=$(find $dir -maxdepth 1 -type f ! -name "*.*" | wc -l | sed 's/.*\.//')
+		texto="Archivos sin tipo"
+		textoc="${num} ${texto}"
+		echo -e "\t${textoc}"
+	else
+		echo "ERROR: El directorio no existe"
+	fi
 }
 # ---------------------------- PROGRAMA PRINCIPAL ---------------------------- #
 OPCION=0
